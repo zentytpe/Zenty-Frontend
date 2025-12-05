@@ -17,7 +17,7 @@ const Settings: React.FC = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
-    const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+    const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
     useEffect(() => {
         if (user) {

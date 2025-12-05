@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, Merchant } from '../types';
 
-const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
 interface AuthContextType {
   user: User | null;

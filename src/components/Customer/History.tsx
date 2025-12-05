@@ -20,7 +20,7 @@ const History: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+    const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
     useEffect(() => {
         const fetchTransactions = async () => {

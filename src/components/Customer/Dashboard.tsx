@@ -30,7 +30,7 @@ const CustomerDashboard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchDashboardData = async () => {

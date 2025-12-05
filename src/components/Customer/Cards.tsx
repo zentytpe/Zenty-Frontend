@@ -48,7 +48,7 @@ const AddCardForm: React.FC<{ onAdded: () => void; onCancel: () => void }> = ({ 
 
       // Send to backend
       const token = localStorage.getItem('zenty_token');
-      const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+      const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
       const res = await fetch(`${API_URL}/api/v1/users/${user._id}/cards`, {
         method: 'POST',
@@ -116,7 +116,7 @@ const CardsPage: React.FC = () => {
     type: 'success'
   });
   const token = localStorage.getItem('zenty_token');
-  const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   const fetchCards = async () => {
     if (!user) return;

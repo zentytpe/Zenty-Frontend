@@ -28,7 +28,7 @@ const PalmManagement: React.FC = () => {
   const [showEnrollmentLocations, setShowEnrollmentLocations] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
+  const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
   useEffect(() => {
     const fetchPalmData = async () => {

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
-import { User, Mail, Phone, Save, Loader2, CheckCircle } from 'lucide-react';
+import { User, Mail, Phone, Save, Loader2, CheckCircle, Trash2, AlertTriangle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const Settings: React.FC = () => {
-    const { user } = useAuth();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -11,6 +13,8 @@ const Settings: React.FC = () => {
         phone: ''
     });
     const [loading, setLoading] = useState(false);
+    const [deleting, setDeleting] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
     const API_URL = import.meta.env.VITE_BACKEND_URL_PROD || 'http://localhost:3000';
@@ -66,6 +70,36 @@ const Settings: React.FC = () => {
             setMessage({ type: 'error', text: err.message || 'Erreur lors de la mise à jour du profil' });
         } finally {
             setLoading(false);
+        }
+    };
+
+    const handleDeleteAccount = async () => {
+        setDeleting(true);
+        setMessage(null);
+
+        try {
+            const token = localStorage.getItem('zenty_token');
+            const response = await fetch(`${API_URL}/api/v1/users/${user?._id}`, {
+                method: 'DELETE',
+                headers: {
+                    'x-auth-token': token || ''
+                }
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.msg || 'Erreur lors de la suppression');
+            }
+
+            // Logout and redirect
+            logout();
+            navigate('/', { replace: true });
+        } catch (err: any) {
+            console.error('Error deleting account:', err);
+            setMessage({ type: 'error', text: err.message || 'Erreur lors de la suppression du compte' });
+            setShowDeleteModal(false);
+        } finally {
+            setDeleting(false);
         }
     };
 
@@ -207,6 +241,75 @@ const Settings: React.FC = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Danger Zone */}
+            <div className="mt-6 bg-red-50 border-2 border-red-200 rounded-xl overflow-hidden">
+                <div className="p-6 border-b border-red-200 bg-red-100">
+                    <div className="flex items-center space-x-3">
+                        <AlertTriangle className="h-6 w-6 text-red-600" />
+                        <h2 className="text-xl font-semibold text-red-900">Zone de danger</h2>
+                    </div>
+                </div>
+                <div className="p-6">
+                    <h3 className="font-medium text-red-900 mb-2">Supprimer mon compte</h3>
+                    <p className="text-red-800 text-sm mb-4">
+                        La suppression de votre compte est définitive. Toutes vos données personnelles,
+                        palmes enregistrées et moyens de paiement seront supprimés de manière irréversible.
+                    </p>
+                    <button
+                        onClick={() => setShowDeleteModal(true)}
+                        className="bg-red-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors inline-flex items-center space-x-2"
+                    >
+                        <Trash2 className="h-5 w-5" />
+                        <span>Supprimer mon compte</span>
+                    </button>
+                </div>
+            </div>
+
+            {/* Delete Confirmation Modal */}
+            {showDeleteModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+                        <div className="flex items-center space-x-3 mb-4">
+                            <div className="bg-red-100 p-3 rounded-full">
+                                <AlertTriangle className="h-6 w-6 text-red-600" />
+                            </div>
+                            <h3 className="text-xl font-bold text-gray-900">Confirmer la suppression</h3>
+                        </div>
+                        <p className="text-gray-700 mb-6">
+                            Êtes-vous absolument sûr de vouloir supprimer votre compte ? Cette action est
+                            <strong className="text-red-600"> irréversible</strong> et toutes vos données seront
+                            définitivement perdues.
+                        </p>
+                        <div className="flex space-x-3">
+                            <button
+                                onClick={() => setShowDeleteModal(false)}
+                                disabled={deleting}
+                                className="flex-1 px-4 py-3 border border-gray-300 rounded-lg font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                onClick={handleDeleteAccount}
+                                disabled={deleting}
+                                className="flex-1 bg-red-600 text-white px-4 py-3 rounded-lg font-medium hover:bg-red-700 transition-colors inline-flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {deleting ? (
+                                    <>
+                                        <Loader2 className="h-5 w-5 animate-spin" />
+                                        <span>Suppression...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Trash2 className="h-5 w-5" />
+                                        <span>Supprimer définitivement</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

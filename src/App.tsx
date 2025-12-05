@@ -5,6 +5,8 @@ import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import LandingPage from './components/LandingPage';
 import EnrollmentPage from './components/Auth/EnrollmentPage';
+import ForgotPassword from './components/Auth/ForgotPassword';
+import ResetPassword from './components/Auth/ResetPassword';
 import CustomerDashboard from './components/Customer/Dashboard';
 import PalmManagement from './components/Customer/PalmManagement';
 import CardsPage from './components/Customer/Cards';
@@ -73,6 +75,8 @@ function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/enregistrement" element={<EnrollmentPage />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
 
             {/* Customer Routes */}
             <Route

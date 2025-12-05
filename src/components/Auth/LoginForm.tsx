@@ -34,7 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ userType, onSwitchToRegister }) =
         if (sessionId && userType === 'customer') {
           navigate(`/enregistrement?session_id=${sessionId}`);
         } else {
-        navigate(userType === 'customer' ? '/dashboard' : '/merchant/dashboard');
+          navigate(userType === 'customer' ? '/dashboard' : '/merchant/dashboard');
         }
       }
     } catch (err) {
@@ -89,6 +89,15 @@ const LoginForm: React.FC<LoginFormProps> = ({ userType, onSwitchToRegister }) =
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
             >
               {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+            </button>
+          </div>
+          <div className="text-right mt-1">
+            <button
+              type="button"
+              onClick={() => navigate('/forgot-password')}
+              className="text-sm text-blue-600 hover:text-blue-700 transition-colors"
+            >
+              Mot de passe oublié ?
             </button>
           </div>
         </div>

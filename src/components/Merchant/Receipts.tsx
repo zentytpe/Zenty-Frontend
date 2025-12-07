@@ -145,7 +145,7 @@ const Receipts = () => {
     };
 
     return (
-        <div className="space-y-6">
+        <div className="p-6 space-y-6">
             <div className="flex justify-between items-center">
                 <div>
                     <h2 className="text-2xl font-bold text-gray-900">Reçus & Exports</h2>

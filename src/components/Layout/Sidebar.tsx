@@ -15,7 +15,6 @@ import {
   Monitor,
   FileText,
   Banknote,
-  Users,
   X
 } from 'lucide-react';
 
@@ -46,7 +45,6 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar }) => {
     { icon: Monitor, label: 'Terminaux', path: '/merchant/terminals' },
     { icon: FileText, label: 'Reçus & exports', path: '/merchant/receipts' },
     { icon: Banknote, label: 'Finances', path: '/merchant/finances' },
-    { icon: Users, label: 'Intégration', path: '/merchant/integration' },
     { icon: Settings, label: 'Paramètres', path: '/merchant/settings' },
     { icon: HelpCircle, label: 'Support', path: '/merchant/support' }
   ];

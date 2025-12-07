@@ -17,6 +17,7 @@ import POS from './components/Merchant/POS';
 import Payments from './components/Merchant/Payments';
 import MerchantSettings from './components/Merchant/Settings';
 import MerchantSupport from './components/Merchant/Support';
+import Receipts from './components/Merchant/Receipts';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; userType?: 'customer' | 'merchant' }> = ({
   children,
@@ -185,10 +186,7 @@ function App() {
               path="/merchant/receipts"
               element={
                 <ProtectedRoute userType="merchant">
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Reçus & exports</h1>
-                    <p className="text-gray-600 mt-2">Fonctionnalité en cours de développement.</p>
-                  </div>
+                  <Receipts />
                 </ProtectedRoute>
               }
             />
@@ -199,17 +197,6 @@ function App() {
                   <div className="p-6">
                     <h1 className="text-3xl font-bold text-gray-900">Finances</h1>
                     <p className="text-gray-600 mt-2">Fonctionnalité en cours de développement.</p>
-                  </div>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/merchant/integration"
-              element={
-                <ProtectedRoute userType="merchant">
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Intégration caisse</h1>
-                    <p className="text-gray-600 mt-2">Fonctionnalité en cours de développement</p>
                   </div>
                 </ProtectedRoute>
               }

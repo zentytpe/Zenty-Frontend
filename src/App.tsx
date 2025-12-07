@@ -15,6 +15,7 @@ import Settings from './components/Customer/Settings';
 import MerchantDashboard from './components/Merchant/Dashboard';
 import POS from './components/Merchant/POS';
 import Payments from './components/Merchant/Payments';
+import MerchantSettings from './components/Merchant/Settings';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; userType?: 'customer' | 'merchant' }> = ({
   children,
@@ -216,10 +217,7 @@ function App() {
               path="/merchant/settings"
               element={
                 <ProtectedRoute userType="merchant">
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Paramètres</h1>
-                    <p className="text-gray-600 mt-2">Fonctionnalité en cours de développement</p>
-                  </div>
+                  <MerchantSettings />
                 </ProtectedRoute>
               }
             />

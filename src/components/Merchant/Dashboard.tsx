@@ -1,92 +1,126 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { 
-  TrendingUp, 
-  Euro, 
-  Users, 
-  Monitor, 
-  BarChart3, 
-  Hand,
-  CreditCard,
-  Calendar
+import {
+  TrendingUp,
+  Euro,
+  Users,
+  Monitor,
+  BarChart3,
+  Hand
 } from 'lucide-react';
+
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
+
+interface DashboardStats {
+  todayPayments: number;
+  totalAmount: number;
+  uniqueClients: number;
+  onlineTerminals: string;
+}
+
+interface Payment {
+  _id: string;
+  userId?: {
+    firstName: string;
+    lastName: string;
+  };
+  amount: number;
+  createdAt: string;
+  terminalId?: {
+    terminalUid: string;
+    name: string;
+  };
+  status: string;
+}
+
+interface ChartDataItem {
+  day: string;
+  amount: number;
+  date: string;
+}
 
 const MerchantDashboard: React.FC = () => {
   const { merchant } = useAuth();
+  const [stats, setStats] = useState<DashboardStats>({
+    todayPayments: 0,
+    totalAmount: 0,
+    uniqueClients: 0,
+    onlineTerminals: '0'
+  });
+  const [recentPayments, setRecentPayments] = useState<Payment[]>([]);
+  const [chartData, setChartData] = useState<ChartDataItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const stats = [
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      if (!merchant?._id) return;
+
+      try {
+        const token = localStorage.getItem('zenty_token');
+        const response = await fetch(`${API_URL}/api/v1/merchants/${merchant._id}/dashboard-stats`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'x-auth-token': token || ''
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success) {
+            setStats(data.stats);
+            setRecentPayments(data.recentPayments);
+            setChartData(data.chartData);
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching dashboard stats:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, [merchant?._id]);
+
+  const statCards = [
     {
       title: 'Paiements aujourd\'hui',
-      value: '24',
-      change: '+12%',
+      value: stats.todayPayments.toString(),
+      // change: '+12%', // Need historical comparison for this
       icon: Hand,
       color: 'text-blue-600 bg-blue-50'
     },
     {
-      title: 'Montant total',
-      value: '€1,248.50',
-      change: '+8%',
+      title: 'Montant total (Aujourd\'hui)',
+      value: `€${stats.totalAmount.toFixed(2)}`,
+      // change: '+8%',
       icon: Euro,
       color: 'text-green-600 bg-green-50'
     },
     {
       title: 'Clients uniques',
-      value: '18',
-      change: '+5%',
+      value: stats.uniqueClients.toString(),
+      // change: '+5%',
       icon: Users,
       color: 'text-purple-600 bg-purple-50'
     },
     {
       title: 'TPE en ligne',
-      value: '3/3',
-      change: '100%',
+      value: stats.onlineTerminals,
+      // change: '100%',
       icon: Monitor,
       color: 'text-orange-600 bg-orange-50'
     }
   ];
 
-  const recentPayments = [
-    {
-      id: '1',
-      customer: 'Marie D.',
-      amount: 12.50,
-      time: '14:30',
-      terminal: 'TPE-001'
-    },
-    {
-      id: '2',
-      customer: 'Jean M.',
-      amount: 25.80,
-      time: '14:15',
-      terminal: 'TPE-002'
-    },
-    {
-      id: '3',
-      customer: 'Sophie L.',
-      amount: 8.30,
-      time: '13:45',
-      terminal: 'TPE-001'
-    },
-    {
-      id: '4',
-      customer: 'Pierre R.',
-      amount: 15.90,
-      time: '13:20',
-      terminal: 'TPE-001'
-    }
-  ];
+  const maxAmount = Math.max(...chartData.map(d => d.amount), 100); // Avoid division by zero
 
-  const chartData = [
-    { day: 'Lun', amount: 450 },
-    { day: 'Mar', amount: 680 },
-    { day: 'Mer', amount: 920 },
-    { day: 'Jeu', amount: 1200 },
-    { day: 'Ven', amount: 1400 },
-    { day: 'Sam', amount: 1800 },
-    { day: 'Dim', amount: 1250 }
-  ];
-
-  const maxAmount = Math.max(...chartData.map(d => d.amount));
+  if (loading) {
+    return <div className="p-6">Chargement...</div>;
+  }
 
   return (
     <div className="p-6 space-y-8">
@@ -99,21 +133,17 @@ const MerchantDashboard: React.FC = () => {
             Bienvenue chez {merchant?.companyName}
           </p>
         </div>
-        <div className="flex items-center space-x-2 bg-green-50 text-green-700 px-4 py-2 rounded-full">
-          <Monitor className="h-5 w-5" />
-          <span className="font-medium">Tous les terminaux en ligne</span>
-        </div>
       </div>
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat) => (
+        {statCards.map((stat) => (
           <div key={stat.title} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600">{stat.title}</p>
                 <p className="text-2xl font-bold text-gray-900 mt-1">{stat.value}</p>
-                <p className="text-sm text-green-600 font-medium">{stat.change}</p>
+                {/* <p className="text-sm text-green-600 font-medium">{stat.change}</p> */}
               </div>
               <div className={`p-3 rounded-lg ${stat.color}`}>
                 <stat.icon className="h-6 w-6" />
@@ -136,16 +166,17 @@ const MerchantDashboard: React.FC = () => {
               <div key={data.day} className="flex items-center space-x-4">
                 <div className="w-8 text-sm text-gray-600 font-medium">{data.day}</div>
                 <div className="flex-1 bg-gray-200 rounded-full h-2">
-                  <div 
+                  <div
                     className="bg-blue-600 h-2 rounded-full"
                     style={{ width: `${(data.amount / maxAmount) * 100}%` }}
                   />
                 </div>
                 <div className="w-16 text-sm text-gray-900 font-medium text-right">
-                  €{data.amount}
+                  €{data.amount.toFixed(0)}
                 </div>
               </div>
             ))}
+            {chartData.length === 0 && <p className="text-gray-500 text-center">Aucune donnée disponible</p>}
           </div>
         </div>
 
@@ -153,55 +184,39 @@ const MerchantDashboard: React.FC = () => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-gray-900">Derniers paiements</h2>
-            <button className="text-blue-600 hover:text-blue-700 font-medium">Voir tout</button>
+            <button
+              onClick={() => navigate('/merchant/payments')}
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Voir tout
+            </button>
           </div>
           <div className="space-y-4">
             {recentPayments.map((payment) => (
-              <div key={payment.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+              <div key={payment._id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center space-x-3">
                   <div className="p-2 bg-blue-100 rounded-full">
                     <Hand className="h-4 w-4 text-blue-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">{payment.customer}</p>
-                    <p className="text-sm text-gray-500">{payment.terminal} • {payment.time}</p>
+                    <p className="font-medium text-gray-900">
+                      {payment.userId ? `${payment.userId.firstName} ${payment.userId.lastName}` : 'Anonyme'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {payment.terminalId?.name || 'Inconnu'} • {new Date(payment.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </p>
                   </div>
                 </div>
                 <div className="text-right">
                   <p className="font-semibold text-gray-900">€{payment.amount.toFixed(2)}</p>
-                  <p className="text-sm text-green-600">Payé</p>
+                  <p className="text-sm text-green-600">
+                    {payment.status === 'completed' ? 'Payé' : payment.status}
+                  </p>
                 </div>
               </div>
             ))}
+            {recentPayments.length === 0 && <p className="text-gray-500 text-center">Aucun paiement récent</p>}
           </div>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Actions rapides</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <CreditCard className="h-8 w-8 text-blue-600" />
-            <div className="text-left">
-              <p className="font-medium text-gray-900">Nouvelle vente</p>
-              <p className="text-sm text-gray-500">Caisse en ligne</p>
-            </div>
-          </button>
-          <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <Hand className="h-8 w-8 text-green-600" />
-            <div className="text-left">
-              <p className="font-medium text-gray-900">Enregistrer une paume</p>
-              <p className="text-sm text-gray-500">Nouveau client</p>
-            </div>
-          </button>
-          <button className="flex items-center space-x-3 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-            <Calendar className="h-8 w-8 text-purple-600" />
-            <div className="text-left">
-              <p className="font-medium text-gray-900">Rapport mensuel</p>
-              <p className="text-sm text-gray-500">Télécharger</p>
-            </div>
-          </button>
         </div>
       </div>
 
@@ -214,8 +229,7 @@ const MerchantDashboard: React.FC = () => {
           <div>
             <h3 className="font-medium text-blue-900">Message système</h3>
             <p className="text-blue-800 mt-1">
-              Votre dernier virement de €2,450.80 a été effectué avec succès le 19 janvier 2024. 
-              Le prochain virement est prévu pour le 26 janvier 2024.
+              Les virements sont effectués automatiquement chaque semaine.
             </p>
           </div>
         </div>

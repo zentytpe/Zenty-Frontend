@@ -151,7 +151,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const fetchUserProfile = async (token: string, type: 'customer' | 'merchant') => {
     try {
-      const response = await fetch(`${API_URL}/api/v1/auth`, {
+      const endpoint = type === 'merchant' ? '/api/v1/merchants/me' : '/api/v1/auth';
+      const response = await fetch(`${API_URL}${endpoint}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

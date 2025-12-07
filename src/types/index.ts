@@ -39,7 +39,7 @@ export interface Transaction {
 }
 
 export interface Merchant {
-  id: string;
+  _id: string;
   companyName: string;
   email: string;
   phone: string;

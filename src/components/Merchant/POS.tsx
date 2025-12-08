@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Plus, Minus, Trash2, Hand, CreditCard, ShoppingCart } from 'lucide-react';
+
+interface CartItem {
+  id: string;
+  name: string;
+  price: number;
+  quantity: number;
+  taxRate: number;
+}
+
+import { useAuth } from '../../contexts/AuthContext';
+
+const API_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000';
 
 interface CartItem {
   id: string;
@@ -18,20 +30,44 @@ interface Product {
 }
 
 const POS: React.FC = () => {
+  const { merchant } = useAuth();
   const [cart, setCart] = useState<CartItem[]>([]);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'palm' | 'card'>('palm');
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const products: Product[] = [
-    { id: '1', name: 'Café Expresso', price: 2.50, taxRate: 0.1, category: 'Boissons' },
-    { id: '2', name: 'Croissant', price: 1.80, taxRate: 0.1, category: 'Viennoiseries' },
-    { id: '3', name: 'Sandwich Jambon', price: 5.50, taxRate: 0.1, category: 'Sandwichs' },
-    { id: '4', name: 'Salade César', price: 8.90, taxRate: 0.1, category: 'Salades' },
-    { id: '5', name: 'Coca Cola', price: 2.20, taxRate: 0.2, category: 'Boissons' },
-    { id: '6', name: 'Pain de mie', price: 3.20, taxRate: 0.055, category: 'Boulangerie' },
-    { id: '7', name: 'Muffin Chocolat', price: 3.50, taxRate: 0.1, category: 'Pâtisseries' },
-    { id: '8', name: 'Thé Earl Grey', price: 2.80, taxRate: 0.1, category: 'Boissons' }
-  ];
+  const fetchProducts = async () => {
+    if (!merchant) return;
+    try {
+      const token = localStorage.getItem('zenty_token');
+      const response = await fetch(`${API_URL}/api/v1/products`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch products');
+
+      const data = await response.json();
+      const mappedProducts = data.map((p: any) => ({
+        id: p._id,
+        name: p.name,
+        price: p.price,
+        taxRate: p.tva ? p.tva / 100 : 0.2, // Convert percentage to decimal
+        category: p.category || 'Général'
+      }));
+      setProducts(mappedProducts);
+    } catch (err) {
+      console.error('Error fetching products:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, [merchant]);
 
   const categories = [...new Set(products.map(p => p.category))];
 
@@ -75,7 +111,8 @@ const POS: React.FC = () => {
 
   const { subtotal, taxAmount, total } = calculateTotals();
 
-  const handlePayment = () => {
+  const handlePayment = (method: 'palm' | 'card') => {
+    setPaymentMethod(method);
     setShowPaymentModal(true);
   };
 
@@ -87,6 +124,8 @@ const POS: React.FC = () => {
       clearCart();
     }, 2000);
   };
+
+  if (loading) return <div className="p-6">Chargement...</div>;
 
   return (
     <div className="p-6">
@@ -189,14 +228,14 @@ const POS: React.FC = () => {
 
                 <div className="mt-6 space-y-3">
                   <button
-                    onClick={handlePayment}
+                    onClick={() => handlePayment('palm')}
                     className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2"
                   >
                     <Hand className="h-5 w-5" />
                     <span>Encaisser par paume</span>
                   </button>
                   <button
-                    onClick={handlePayment}
+                    onClick={() => handlePayment('card')}
                     className="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center justify-center space-x-2"
                   >
                     <CreditCard className="h-5 w-5" />

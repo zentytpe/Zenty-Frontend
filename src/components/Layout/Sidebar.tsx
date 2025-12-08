@@ -9,8 +9,6 @@ import {
   Settings,
   HelpCircle,
   BarChart3,
-  ShoppingCart,
-  Package,
   Receipt,
   Monitor,
   FileText,
@@ -39,8 +37,8 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, closeSidebar }) => {
 
   const merchantMenuItems = [
     { icon: BarChart3, label: 'Tableau de bord', path: '/merchant/dashboard' },
-    { icon: ShoppingCart, label: 'Caisse', path: '/merchant/pos' },
-    { icon: Package, label: 'Produits', path: '/merchant/products' },
+    /*{ icon: ShoppingCart, label: 'Caisse', path: '/merchant/pos' },
+    { icon: Package, label: 'Produits', path: '/merchant/products' },*/
     { icon: Receipt, label: 'Paiements', path: '/merchant/payments' },
     { icon: Monitor, label: 'Terminaux', path: '/merchant/terminals' },
     { icon: FileText, label: 'Reçus & exports', path: '/merchant/receipts' },

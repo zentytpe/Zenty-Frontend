@@ -3,9 +3,6 @@ import { useAuth } from '../../contexts/AuthContext';
 import {
     Search,
     Download,
-    Filter,
-    ArrowUpRight,
-    ArrowDownLeft,
     MoreVertical,
     Hand
 } from 'lucide-react';

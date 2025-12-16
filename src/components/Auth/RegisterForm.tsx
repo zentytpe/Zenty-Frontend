@@ -224,18 +224,21 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ userType, onSwitchToLogin }
           <button
             type="button"
             onClick={() => handleInputChange('acceptTerms', !formData.acceptTerms)}
-            className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${
-              formData.acceptTerms
+            className={`flex-shrink-0 w-5 h-5 rounded border-2 flex items-center justify-center transition-colors ${formData.acceptTerms
                 ? 'bg-blue-600 border-blue-600 text-white'
                 : 'border-gray-300 hover:border-gray-400'
-            }`}
+              }`}
           >
             {formData.acceptTerms && <Check className="h-3 w-3" />}
           </button>
           <label className="text-sm text-gray-700">
             J'accepte les{' '}
-            <a href="#" className="text-blue-600 hover:text-blue-700">
+            <a href="/cgu" target="_blank" className="text-blue-600 hover:text-blue-700">
               Conditions Générales d'Utilisation
+            </a>
+            {' '}et la{' '}
+            <a href="/politique-confidentialite" target="_blank" className="text-blue-600 hover:text-blue-700">
+              Politique de confidentialité
             </a>
           </label>
         </div>

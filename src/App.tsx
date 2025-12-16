@@ -4,6 +4,12 @@ import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Header from './components/Layout/Header';
 import Sidebar from './components/Layout/Sidebar';
 import LandingPage from './components/LandingPage';
+import FAQ from './components/Public/FAQ';
+import MentionsLegales from './components/Public/MentionsLegales';
+import PolitiqueConfidentialite from './components/Public/PolitiqueConfidentialite';
+import RequestTerminalPage from './components/Public/RequestTerminalPage';
+import Contact from './components/Public/Contact';
+import CGU from './components/Public/CGU';
 import EnrollmentPage from './components/Auth/EnrollmentPage';
 import ForgotPassword from './components/Auth/ForgotPassword';
 import ResetPassword from './components/Auth/ResetPassword';
@@ -12,6 +18,7 @@ import PalmManagement from './components/Customer/PalmManagement';
 import CardsPage from './components/Customer/Cards';
 import History from './components/Customer/History';
 import Settings from './components/Customer/Settings';
+import CustomerSupport from './components/Customer/Support';
 import MerchantDashboard from './components/Merchant/Dashboard';
 import POS from './components/Merchant/POS';
 import Payments from './components/Merchant/Payments';
@@ -81,6 +88,12 @@ function App() {
         <AppLayout>
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/mentions-legales" element={<MentionsLegales />} />
+            <Route path="/politique-confidentialite" element={<PolitiqueConfidentialite />} />
+            <Route path="/demander-boitier" element={<RequestTerminalPage />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/cgu" element={<CGU />} />
             <Route path="/enregistrement" element={<EnrollmentPage />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
@@ -130,10 +143,7 @@ function App() {
               path="/support"
               element={
                 <ProtectedRoute userType="customer">
-                  <div className="p-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Support</h1>
-                    <p className="text-gray-600 mt-2">Fonctionnalité en cours de développement.</p>
-                  </div>
+                  <CustomerSupport />
                 </ProtectedRoute>
               }
             />

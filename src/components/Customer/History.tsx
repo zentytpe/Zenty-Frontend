@@ -62,6 +62,32 @@ const History: React.FC = () => {
         });
     };
 
+    const handleDownloadInvoice = async (transactionId: string) => {
+        try {
+            const token = localStorage.getItem('zenty_token');
+            const response = await fetch(`${API_URL}/api/v1/users/${user!._id}/transactions/${transactionId}/invoice`, {
+                headers: {
+                    'x-auth-token': token || ''
+                }
+            });
+
+            if (!response.ok) throw new Error('Erreur téléchargement');
+
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `facture-${transactionId}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        } catch (error) {
+            console.error('Erreur lors du téléchargement de la facture :', error);
+            alert('Impossible de télécharger la facture. Veuillez réessayer.');
+        }
+    };
+
     const filteredTransactions = transactions.filter(t =>
         t.merchant.toLowerCase().includes(searchTerm.toLowerCase()) ||
         t.amount.toString().includes(searchTerm)
@@ -140,6 +166,7 @@ const History: React.FC = () => {
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Moyen de paiement</th>
                                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Montant</th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
@@ -173,6 +200,15 @@ const History: React.FC = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
                                             €{transaction.amount.toFixed(2)}
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <button
+                                                onClick={() => handleDownloadInvoice(transaction.id)}
+                                                className="text-blue-600 hover:text-blue-900 inline-flex items-center"
+                                                title="Télécharger la facture"
+                                            >
+                                                <Download className="h-4 w-4" />
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}

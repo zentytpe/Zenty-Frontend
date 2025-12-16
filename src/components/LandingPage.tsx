@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Hand, Shield, Zap, Users, ArrowRight, Check } from 'lucide-react';
+import { Hand, Shield, Zap, Users, ArrowRight } from 'lucide-react';
+import PublicHeader from './Layout/PublicHeader';
+import PublicFooter from './Layout/PublicFooter';
 import LoginForm from './Auth/LoginForm';
 import RegisterForm from './Auth/RegisterForm';
 
@@ -62,27 +64,25 @@ const LandingPage: React.FC = () => {
               <span>← Retour à l'accueil</span>
             </button>
           </div>
-          
+
           <div className="flex justify-center mb-8">
             <div className="bg-white rounded-xl p-2 shadow-sm">
               <div className="flex">
                 <button
                   onClick={() => setUserType('customer')}
-                  className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                    userType === 'customer'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                  className={`px-6 py-3 rounded-lg font-medium transition-colors ${userType === 'customer'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                    }`}
                 >
-                  Client
+                  Utilisateur
                 </button>
                 <button
                   onClick={() => setUserType('merchant')}
-                  className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                    userType === 'merchant'
-                      ? 'bg-blue-600 text-white'
-                      : 'text-gray-600 hover:text-gray-900'
-                  }`}
+                  className={`px-6 py-3 rounded-lg font-medium transition-colors ${userType === 'merchant'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
+                    }`}
                 >
                   Commerçant
                 </button>
@@ -109,30 +109,10 @@ const LandingPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-white shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <Hand className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold text-gray-900">Zenty</span>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowAuth('login')}
-                className="text-gray-700 hover:text-gray-900 font-medium"
-              >
-                Connexion
-              </button>
-              <button
-                onClick={() => setShowAuth('register')}
-                className="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-              >
-                Créer un compte
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <PublicHeader
+        onLogin={() => setShowAuth('login')}
+        onRegister={() => setShowAuth('register')}
+      />
 
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
@@ -170,31 +150,6 @@ const LandingPage: React.FC = () => {
               <div key={index} className="text-center">
                 <div className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
                 <div className="text-gray-600">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Pourquoi choisir Zenty ?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Une technologie de pointe pour une expérience de paiement révolutionnaire
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
-                <div className="p-3 bg-blue-50 rounded-lg w-fit mb-4">
-                  <feature.icon className="h-6 w-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
@@ -252,6 +207,31 @@ const LandingPage: React.FC = () => {
         </div>
       </section>
 
+      {/* Features Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+              Pourquoi choisir Zenty ?
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Une technologie de pointe pour une expérience de paiement révolutionnaire
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="bg-white p-8 rounded-xl shadow-sm border border-gray-200 flex items-center justify-center flex-col">
+                <div className="p-3 bg-blue-50 rounded-lg w-fit mb-4">
+                  <feature.icon className="h-6 w-6 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+                <p className="text-gray-600 text-center">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-20 bg-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -272,48 +252,8 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <Hand className="h-6 w-6" />
-                <span className="text-xl font-bold">Zenty</span>
-              </div>
-              <p className="text-gray-400">
-                La révolution du paiement biométrique pour tous.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Produit</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Fonctionnalités</a></li>
-                <li><a href="#" className="hover:text-white">Sécurité</a></li>
-                <li><a href="#" className="hover:text-white">Tarifs</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Entreprise</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">À propos</a></li>
-                <li><a href="#" className="hover:text-white">Carrières</a></li>
-                <li><a href="#" className="hover:text-white">Presse</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Support</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white">Aide</a></li>
-                <li><a href="#" className="hover:text-white">Contact</a></li>
-                <li><a href="#" className="hover:text-white">Statut</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2024 Zenty. Tous droits réservés.</p>
-          </div>
-        </div>
-      </footer>
+      {/* Footer */}
+      <PublicFooter />
     </div>
   );
 };

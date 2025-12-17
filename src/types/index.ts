@@ -4,7 +4,7 @@ export interface User {
   firstName: string;
   lastName: string;
   phone: string;
-  profilePicture?: string;
+  profilePicture?: string | null;
   createdAt: string;
 }
 

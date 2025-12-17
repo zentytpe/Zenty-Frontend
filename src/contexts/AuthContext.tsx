@@ -10,6 +10,7 @@ interface AuthContextType {
   login: (email: string, password: string, type: 'customer' | 'merchant') => Promise<boolean>;
   register: (data: any, type: 'customer' | 'merchant') => Promise<boolean>;
   logout: () => void;
+  refreshUser: () => Promise<void>;
   isLoading: boolean;
 }
 
@@ -179,6 +180,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const refreshUser = async () => {
+    const token = localStorage.getItem('zenty_token');
+    const type = localStorage.getItem('zenty_user_type') as 'customer' | 'merchant' | null;
+
+    if (token && type) {
+      await fetchUserProfile(token, type);
+    }
+  };
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -187,6 +197,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       login,
       register,
       logout,
+      refreshUser,
       isLoading
     }}>
       {children}

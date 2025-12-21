@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Hand, Shield, Zap, Users, ArrowRight } from 'lucide-react';
+import { Hand, Shield, Zap, Fingerprint, ShieldCheck, BadgeCheck, Users, ArrowRight, check } from 'lucide-react';
 import PublicHeader from './Layout/PublicHeader';
 import PublicFooter from './Layout/PublicFooter';
 import LoginForm from './Auth/LoginForm';
@@ -30,9 +30,9 @@ const LandingPage: React.FC = () => {
 
   const features = [
     {
-      icon: Zap,
-      title: 'Paiement ultra-rapide',
-      description: 'Payez en moins de 10 secondes, sans carte, sans téléphone'
+      icon: Fingerprint,
+      title: 'Impossible à copier',
+      description: 'Photo, vidéo, moulage, impression 3D.. rien ne fonctionne. Le capteur vérifie la présence d’un flux sanguin réel.'
     },
     {
       icon: Shield,

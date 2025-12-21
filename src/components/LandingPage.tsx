@@ -35,21 +35,21 @@ const LandingPage: React.FC = () => {
       description: 'Photo, vidéo, moulage, impression 3D.. rien ne fonctionne. Le capteur vérifie la présence d’un flux sanguin réel.'
     },
     {
-      icon: Shield,
-      title: 'Sécurité maximale',
-      description: 'Biométrie avancée et chiffrement de bout en bout'
+      icon: ShieldCheck,
+      title: 'Modèle crypté',
+      description: 'Votre paume n’est jamais stockée. Aucune image n’est stockée, uniquement un modèle crypté.'
     },
     {
       icon: Users,
-      title: 'Expérience simplifiée',
-      description: 'Une seule paume pour tous vos paiements'
+      title: 'Conçu pour la confiance',
+      description: 'Conforme RGPD & standards biométriques internationaux.'
     }
   ];
 
   const stats = [
-    { value: '10s', label: 'Temps de paiement' },
-    { value: '99.9%', label: 'Taux de réussite' },
-    { value: '500+', label: 'Commerçants partenaires' }
+    { value: '⚡', label: 'Paiement en moins de 10 secondes, sans carte ni téléphone' },
+    { value: '🔒', label: 'Le capteur vérifie la présence d’un flux sanguin réel. Impossible à copier ou falsifier' },
+    { value: '🪄', label: 'Le premier moyen de paiement basé sur la reconnaissance veineuse en temps réel' }
   ];
 
   if (showAuth) {

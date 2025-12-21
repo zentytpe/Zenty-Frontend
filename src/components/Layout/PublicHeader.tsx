@@ -32,9 +32,19 @@ const PublicHeader: React.FC<PublicHeaderProps> = ({ onLogin, onRegister }) => {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-8">
             <Link to="/" className="flex items-center space-x-2">
-              <Hand className="h-8 w-8 text-blue-600" />
-              <span className="text-2xl font-bold text-gray-900">Zenty</span>
-            </Link>
+  <Hand className="h-8 w-8 text-blue-600 mt-1" />
+
+  <div className="flex flex-col leading-tight">
+    <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-500 text-transparent bg-clip-text">
+      ZENTY
+    </span>
+
+    <span className="text-xs font-medium bg-gradient-to-r from-blue-600 to-green-500 text-transparent bg-clip-text">
+      Le paiement réinventé
+    </span>
+  </div>
+</Link>
+
 
             <nav className="hidden md:flex space-x-6">
               <Link

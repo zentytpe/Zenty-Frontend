@@ -10,10 +10,10 @@ const PublicFooter: React.FC = () => {
                     <div>
                         <div className="flex items-center space-x-2 mb-4">
                             <Hand className="h-6 w-6" />
-                            <span className="text-xl font-bold">Zenty</span>
+                            <span className="text-xl font-bold">ZENTY</span>
                         </div>
                         <p className="text-gray-400">
-                            La révolution du paiement biométrique pour tous.
+                            L’expérience de paiement révolutionnaire
                         </p>
                     </div>
                     <div>

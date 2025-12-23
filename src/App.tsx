@@ -28,6 +28,7 @@ import Receipts from './components/Merchant/Receipts';
 import Terminals from './components/Merchant/Terminals';
 import Products from './components/Merchant/Products';
 import MerchantFinances from './components/Merchant/Finances';
+import ScrollToTop from './components/ScrollToTop';
 
 const ProtectedRoute: React.FC<{ children: React.ReactNode; userType?: 'customer' | 'merchant' }> = ({
   children,
@@ -85,6 +86,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <AppLayout>
           <Routes>
             <Route path="/" element={<LandingPage />} />

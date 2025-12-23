@@ -203,9 +203,6 @@ const Finances: React.FC = () => {
                         </div>
                     </div>
                     <div className="bg-gray-50 px-5 py-3">
-                        <div className="text-sm">
-                            <span className="text-gray-500">Les versements sont effectués automatiquement chaque lundi.</span>
-                        </div>
                     </div>
                 </div>
 

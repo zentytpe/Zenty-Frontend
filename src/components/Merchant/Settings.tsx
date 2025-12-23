@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Building2, Mail, Phone, MapPin, Save, Loader2, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Building2, Mail, Phone, MapPin, Save, Loader2, CheckCircle, AlertTriangle, FileText, Hash } from 'lucide-react';
 
 const Settings: React.FC = () => {
     const [formData, setFormData] = useState({
         companyName: '',
         email: '',
         phone: '',
-        address: ''
+        address: '',
+        siret: '',
+        tvaNumber: ''
     });
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -30,7 +32,9 @@ const Settings: React.FC = () => {
                         companyName: data.companyName || '',
                         email: data.email || '',
                         phone: data.phone || '',
-                        address: data.address || ''
+                        address: data.address || '',
+                        siret: data.siret || '',
+                        tvaNumber: data.tvaNumber || ''
                     });
                 }
             } catch (error) {
@@ -78,7 +82,9 @@ const Settings: React.FC = () => {
                 companyName: data.merchant.companyName || formData.companyName,
                 email: data.merchant.email || formData.email,
                 phone: data.merchant.phone || formData.phone,
-                address: data.merchant.address || formData.address
+                address: data.merchant.address || formData.address,
+                siret: data.merchant.siret || formData.siret,
+                tvaNumber: data.merchant.tvaNumber || formData.tvaNumber
             });
 
             setMessage({ type: 'success', text: 'Profil mis à jour avec succès !' });
@@ -188,6 +194,46 @@ const Settings: React.FC = () => {
                                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Adresse complète de l'entreprise"
                             />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label htmlFor="siret" className="block text-sm font-medium text-gray-700 mb-2">
+                                Numéro SIRET *
+                            </label>
+                            <div className="relative">
+                                <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                                <input
+                                    type="text"
+                                    id="siret"
+                                    name="siret"
+                                    value={formData.siret}
+                                    onChange={handleChange}
+                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="123 456 789 01234"
+                                    required
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="tvaNumber" className="block text-sm font-medium text-gray-700 mb-2">
+                                Numéro de TVA intracommunautaire *
+                            </label>
+                            <div className="relative">
+                                <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                                <input
+                                    type="text"
+                                    id="tvaNumber"
+                                    name="tvaNumber"
+                                    value={formData.tvaNumber}
+                                    onChange={handleChange}
+                                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="FR12345678901"
+                                    required
+                                />
+                            </div>
                         </div>
                     </div>
 

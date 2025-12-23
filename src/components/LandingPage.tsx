@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { Hand, Shield, Zap, Users, ArrowRight } from 'lucide-react';
+import { Hand, Shield, Zap, Fingerprint, ShieldCheck, BadgeCheck, Users, ArrowRight, check } from 'lucide-react';
 import PublicHeader from './Layout/PublicHeader';
 import PublicFooter from './Layout/PublicFooter';
 import LoginForm from './Auth/LoginForm';
@@ -30,26 +30,26 @@ const LandingPage: React.FC = () => {
 
   const features = [
     {
-      icon: Zap,
-      title: 'Paiement ultra-rapide',
-      description: 'Payez en moins de 10 secondes, sans carte, sans téléphone'
+      icon: Fingerprint,
+      title: 'Impossible à copier',
+      description: 'Photo, vidéo, moulage, impression 3D.. rien ne fonctionne. Le capteur vérifie la présence d’un flux sanguin réel.'
     },
     {
-      icon: Shield,
-      title: 'Sécurité maximale',
-      description: 'Biométrie avancée et chiffrement de bout en bout'
+      icon: ShieldCheck,
+      title: 'Modèle crypté',
+      description: 'Votre paume n’est jamais stockée. Aucune image n’est stockée, uniquement un modèle crypté.'
     },
     {
       icon: Users,
-      title: 'Expérience simplifiée',
-      description: 'Une seule paume pour tous vos paiements'
+      title: 'Conçu pour la confiance',
+      description: 'Conforme RGPD & standards biométriques internationaux.'
     }
   ];
 
   const stats = [
-    { value: '10s', label: 'Temps de paiement' },
-    { value: '99.9%', label: 'Taux de réussite' },
-    { value: '500+', label: 'Commerçants partenaires' }
+    { value: '⚡', label: 'Paiement en moins de 10 secondes, sans carte ni téléphone' },
+    { value: '🔒', label: 'Le capteur vérifie la présence d’un flux sanguin réel. Impossible à copier ou falsifier' },
+    { value: '🪄', label: 'Le premier moyen de paiement basé sur la reconnaissance veineuse en temps réel' }
   ];
 
   if (showAuth) {
@@ -120,11 +120,13 @@ const LandingPage: React.FC = () => {
           <div className="text-center">
             <h1 className="text-5xl font-bold text-gray-900 mb-6">
               Payez avec votre
-              <span className="text-blue-600"> paume</span>
+              <span className="text-blue-600"> Paume de main</span>
             </h1>
             <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-              La révolution du paiement biométrique. Sécurisé, instantané et sans contact.
+              Sécurisé, instantané et sans contact.
+              <p className="text-xl text-gray-700 mb-8 max-w-3xl mx-auto">
               Votre paume devient votre nouveau moyen de paiement.
+            </p>
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
@@ -181,7 +183,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Enregistrez votre paume</h3>
-                  <p className="text-gray-600">Scan unique chez un commerçant partenaire</p>
+                  <p className="text-gray-600">Scan unique chez un commerçant équipé Zenty</p>
                 </div>
               </div>
               <div className="flex items-start space-x-4">
@@ -190,7 +192,7 @@ const LandingPage: React.FC = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Payez instantanément</h3>
-                  <p className="text-gray-600">Posez votre main, c'est payé en moins de 10 secondes</p>
+                  <p className="text-gray-600">Survolez le boitier Zenty, c'est payé</p>
                 </div>
               </div>
             </div>
@@ -200,7 +202,7 @@ const LandingPage: React.FC = () => {
                   <Hand className="h-16 w-16 text-blue-600" />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">Votre paume = Votre portefeuille</h3>
-                <p className="text-gray-600">Simple, sécurisé, révolutionnaire</p>
+                <p className="text-gray-600">Simple, sécurisé et révolutionnaire</p>
               </div>
             </div>
           </div>
@@ -212,10 +214,10 @@ const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Pourquoi choisir Zenty ?
+               Ultra sécurisé — impossible à usurper
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Une technologie de pointe pour une expérience de paiement révolutionnaire
+             La sécurité n’est pas une option, elle est intégrée au cœur de Zenty 🔒
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -239,7 +241,7 @@ const LandingPage: React.FC = () => {
             Prêt à révolutionner vos paiements ?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Rejoignez des milliers d'utilisateurs qui ont déjà adopté Zenty
+            
           </p>
           <button
             onClick={() => setShowAuth('register')}
